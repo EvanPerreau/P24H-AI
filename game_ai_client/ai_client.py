@@ -91,7 +91,7 @@ class AIClient:
             pioches = self.action.get_pioches()
             degats = self.action.get_degats()
             scoring = Scoring(monstres, pioches, me, self.deck, degats)
-            if int(self.game_state[2]) % 4 != 0:
+            if (int(self.game_state[2]) + 1) % 4 != 0:
                 card = scoring.get_scored_cartes()[0]
                 for scored_carte in scoring.get_scored_cartes():
                     if scored_carte["score"] > card["score"]:
@@ -123,7 +123,7 @@ class AIClient:
                 
                 self.action.attaquer(monster["index"])
 
-            if int(self.game_state[2]) == 12:
+            if int(self.game_state[2]) + 1 == 12:
                 self.action.utiliser(TypeCarte.DEFENSE)
                 self.action.utiliser(TypeCarte.SAVOIR)
 
