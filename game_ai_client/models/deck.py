@@ -35,14 +35,28 @@ class Deck:
             bool: True si la pioche a été ajoutée, False sinon
         """
         card_count = self.count_cards_by_type(pioche.type_carte)
+        Logger.debug(f"Card count: {card_count}")
+        Logger.debug(f"Card values: {self.sum_values_by_type(pioche.type_carte)}")
+        Logger.debug(f"Card value: {pioche.valeur}")
 
         # Ajuster la valeur selon le nombre de cartes du même type
-        if card_count >= 8:
+        if card_count > 8:
             pioche.valeur = int(pioche.valeur * 2)
-        elif card_count >= 4:
+        elif card_count >= 5:
             pioche.valeur = int(pioche.valeur * 1.5)
 
         self.collections[pioche.type_carte].append(pioche)
+        Logger.debug(f"Card count: {self.count_cards_by_type(pioche.type_carte)}")
+        Logger.debug(f"Card values: {self.sum_values_by_type(pioche.type_carte)}")
+
+    def remove_cards_by_type(self, type_carte: TypeCarte):
+        """
+        Supprime toutes les pioches d'un type spécifique.
+        
+        Args:
+            type_carte: Type de carte à supprimer
+        """
+        self.collections[type_carte] = []
     
     def count_cards_by_type(self, type_carte: TypeCarte) -> int:
         """

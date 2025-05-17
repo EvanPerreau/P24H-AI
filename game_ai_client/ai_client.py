@@ -87,14 +87,38 @@ class AIClient:
         if self.game_state[0] == "DEBUT_TOUR":
             me = self.action.get_moi()
             other_players = [player for player in self.action.get_joueurs() if int(player.index) != int(self.team_number)]
-            monstres = self.action.get_monstres()
+            monstres = [monstre for monstre in self.action.get_monstres() if int(monstre.vie) > 0]
             pioches = self.action.get_pioches()
             degats = self.action.get_degats()
-            scoring = Scoring(monstres, pioches, me, self.deck, degats)
+            scoring = Scoring(monstres, pioches, me, self.deck, degats, int(self.game_state[2]) + 1)
+
+            if int(self.game_state[1]) == 20 and int(self.game_state[2]) == 15:
+                self.action.utiliser(TypeCarte.SAVOIR)
+                self.deck.remove_cards_by_type(TypeCarte.SAVOIR)
+
+            if me.score_savoir + self.deck.sum_values_by_type(TypeCarte.SAVOIR) >= 2000 and (int(self.game_state[2]) + 1) % 4 == 0:
+                self.action.utiliser(TypeCarte.SAVOIR)
+                self.deck.remove_cards_by_type(TypeCarte.SAVOIR)
 
             if int(self.game_state[2]) == 15:
                 self.action.utiliser(TypeCarte.DEFENSE)
+                self.deck.remove_cards_by_type(TypeCarte.DEFENSE)
+
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            Logger.debug(f"Vie: {me.vie}")
+            Logger.debug(f"Score defense: {me.score_defense}")
+            Logger.debug(f"Card defense values: {self.deck.sum_values_by_type(TypeCarte.DEFENSE)}")
+            Logger.debug(f"Degats: {degats}")
+            print()
+
+            if int(self.game_state[2]) == 15 and me.vie + me.score_defense + self.deck.sum_values_by_type(TypeCarte.DEFENSE) <= degats:
                 self.action.utiliser(TypeCarte.SAVOIR)
+                self.deck.remove_cards_by_type(TypeCarte.SAVOIR)
 
             if (int(self.game_state[2]) + 1) % 4 != 0:
                 card = scoring.get_scored_cartes()[0]
@@ -106,8 +130,9 @@ class AIClient:
                 for p in pioches:
                     if p.index == card["index"]:
                         self.deck.add_card(p)
+                        break
             
-            elif self.deck.sum_values_by_type(TypeCarte.ATTAQUE) <= 0 and me.score_attaque <= 0:
+            elif (self.deck.sum_values_by_type(TypeCarte.ATTAQUE) <= 0 and me.score_attaque <= 0) or len(monstres) == 0:
                 card = scoring.get_scored_cartes()[0]
                 for scored_carte in scoring.get_scored_cartes():
                     if scored_carte["score"] > card["score"]:
@@ -121,6 +146,7 @@ class AIClient:
 
             else:
                 self.action.utiliser(TypeCarte.ATTAQUE)
+                self.deck.remove_cards_by_type(TypeCarte.ATTAQUE)
                 monster = scoring.get_scored_monstres()[0]
                 for scored_monster in scoring.get_scored_monstres():
                     if scored_monster["score"] > monster["score"]:
