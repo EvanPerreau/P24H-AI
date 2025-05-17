@@ -2,11 +2,11 @@
 Module client IA pour le jeu.
 Gère la logique du jeu et la prise de décision basée sur la communication avec le serveur.
 """
-from typing import Dict, Any, Optional
-import json
+from typing import Dict, Any, List
 
 from .connection import Connection
-from .utils.logger import Logger, LogLevel
+from .utils.logger import Logger
+from .utils.action import Action
 
 
 class AIClient:
@@ -31,7 +31,9 @@ class AIClient:
         Initialise le client IA.
         """
         self.connection = Connection.get_instance()
-        self.game_state: Dict[str, Any] = {}
+        self.action = Action(self.connection)
+        self.game_state: List[str] = []
+        self.team_number: int = None
         Logger.info("Client IA initialisé")
   
     def __init__(self):
@@ -41,35 +43,29 @@ class AIClient:
         if not hasattr(self, 'game_state'):
             self._initialize()
     
-    def process_message(self, message: str) -> Dict[str, Any]:
+    def process_message(self, message: str) -> List[str]:
         """
-        Traite un message reçu du serveur.
+        Traite un message reçu du serveur au format "NomCommande|Argument1|Argument2".
         
         Args:
             message: Le message à traiter
             
         Returns:
-            Dict[str, Any]: Le message analysé sous forme de dictionnaire
+            List[str]: Le message analysé sous forme de liste
         """
-        try:
-            parsed_message = json.loads(message)
-            Logger.debug(f"Message traité: {parsed_message}")
-            return parsed_message
-        except json.JSONDecodeError:
-            Logger.warning(f"Échec de l'analyse du message JSON: {message}")
-            return {"raw": message}
+        return message.strip().split('|')
     
-    def update_game_state(self, state_update: Dict[str, Any]):
+    def update_game_state(self, state_update: List[str]):
         """
         Met à jour l'état du jeu avec de nouvelles informations.
         
         Args:
             state_update: Les nouvelles informations d'état
         """
-        self.game_state.update(state_update)
+        self.game_state = state_update
         Logger.debug(f"État du jeu mis à jour: {self.game_state}")
     
-    def make_decision(self) -> Dict[str, Any]:
+    def make_decision(self):
         """
         Prend une décision basée sur l'état actuel du jeu.
         C'est ici que la logique de l'IA serait implémentée.
@@ -80,27 +76,20 @@ class AIClient:
         # Espace réservé pour la logique de décision de l'IA
         # Ceci devrait être implémenté en fonction des règles spécifiques du jeu
         Logger.info("Prise de décision basée sur l'état actuel du jeu")
-        
-        # Exemple simple de décision
-        decision = {
-            "action": "move",
-            "parameters": {
-                "direction": "forward",
-                "steps": 1
-            }
-        }
-        
-        return decision
-    
-    def send_decision(self, decision: Dict[str, Any]):
-        """
-        Envoie une décision au serveur.
-        
-        Args:
-            decision: La décision à envoyer
-        """
-        message = json.dumps(decision)
-        self.connection.send_message(message)
+
+        if self.game_state[0] == "NOM_EQUIPE":
+            self.team_number = self.action.send_team_name("BUTiChat")
+
+        if self.game_state[0] == "DEBUT_TOUR":
+            players = self.action.get_joueurs()
+            print_table(players)
+            me = self.action.get_moi()
+            print_table(me)
+            monstres = self.action.get_monstres()
+            print_table(monstres)
+            pioches = self.action.get_pioches()
+            print_table(pioches)
+            self.action.piocher(0)
     
     def run_game_loop(self):
         """
@@ -115,20 +104,17 @@ class AIClient:
                 
                 # Traiter le message
                 parsed_message = self.process_message(message)
-                
-                # Vérifier si le jeu est terminé
-                if parsed_message.get("game_over", False):
-                    Logger.info(f"Jeu terminé. Résultat: {parsed_message.get('result', 'inconnu')}")
+
+                if parsed_message[0] == "FIN":
                     break
                 
                 # Mettre à jour l'état du jeu
                 self.update_game_state(parsed_message)
+
+                Logger.info(f"État du jeu mis à jour: {self.game_state}")
                 
                 # Prendre une décision
-                decision = self.make_decision()
-                
-                # Envoyer la décision au serveur
-                self.send_decision(decision)
+                self.make_decision()
                 
         except ConnectionError as e:
             Logger.error(f"Erreur de connexion: {e}")

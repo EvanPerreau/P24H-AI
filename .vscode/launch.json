@@ -1,0 +1,56 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "P24H-AI Client 1",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "python": "C:/Users/valen/AppData/Local/Programs/Python/Python312/python.exe"
+        },
+        {
+            "name": "P24H-AI Client 2",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "python": "C:/Users/valen/AppData/Local/Programs/Python/Python312/python.exe"
+        },
+        {
+            "name": "P24H-AI Client 3",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "python": "C:/Users/valen/AppData/Local/Programs/Python/Python312/python.exe"
+        },
+        {
+            "name": "P24H-AI Client 4",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "python": "C:/Users/valen/AppData/Local/Programs/Python/Python312/python.exe"
+        },
+        {
+            "name": "Lancer 4 Clients",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "python": "C:/Users/valen/AppData/Local/Programs/Python/Python312/python.exe"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Lancer 4 instances",
+            "configurations": ["P24H-AI Client 1", "P24H-AI Client 2", "P24H-AI Client 3", "P24H-AI Client 4"]
+        }
+    ]
+}

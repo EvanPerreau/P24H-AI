@@ -62,15 +62,27 @@ class Connection:
             
         try:
             # Recevoir des données jusqu'au caractère de nouvelle ligne
-            message = ""
+            data_bytes = bytearray()
             while True:
-                chunk = self._client.recv(1).decode('utf-8')
-                if not chunk:
+                byte_chunk = self._client.recv(1)
+                if not byte_chunk:
                     # Connexion fermée par le serveur
                     raise ConnectionError("Connexion fermée par le serveur")
-                if chunk == '\n':
+                
+                # Si on trouve un saut de ligne, on arrête la lecture
+                if byte_chunk == b'\n':
                     break
-                message += chunk
+                    
+                # Sinon on ajoute l'octet au buffer
+                data_bytes.extend(byte_chunk)
+            
+            # Décoder les données complètes en UTF-8
+            try:
+                message = data_bytes.decode('utf-8')
+            except UnicodeDecodeError:
+                # En cas d'échec avec UTF-8, essayer avec Latin-1 (ISO-8859-1) qui peut décoder n'importe quel octet
+                Logger.warning("Échec du décodage UTF-8, tentative avec Latin-1")
+                message = data_bytes.decode('latin-1')
                 
             Logger.action(f"<-- Message reçu: {message}")
             return message

@@ -12,7 +12,7 @@ class Config:
     """
     # Paramètres de connexion au serveur
     HOSTNAME_SERVER: str = "localhost"
-    PORT_SERVER: int = 8080
+    PORT_SERVER: int = 1234
     
     # Paramètres de journalisation
     LOG_LEVEL: str = "INFO"

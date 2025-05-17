@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Lancer 4 instances de main.py",
+            "type": "shell",
+            "command": "Start-Process -NoNewWindow powershell -ArgumentList \"-Command C:/Users/valen/AppData/Local/Programs/Python/Python312/python.exe c:/Users/valen/OneDrive/Documents/01.BUT/p24h_2/P24H-AI/main.py\"; Start-Process -NoNewWindow powershell -ArgumentList \"-Command C:/Users/valen/AppData/Local/Programs/Python/Python312/python.exe c:/Users/valen/OneDrive/Documents/01.BUT/p24h_2/P24H-AI/main.py\"; Start-Process -NoNewWindow powershell -ArgumentList \"-Command C:/Users/valen/AppData/Local/Programs/Python/Python312/python.exe c:/Users/valen/OneDrive/Documents/01.BUT/p24h_2/P24H-AI/main.py\"; C:/Users/valen/AppData/Local/Programs/Python/Python312/python.exe c:/Users/valen/OneDrive/Documents/01.BUT/p24h_2/P24H-AI/main.py",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
+}
