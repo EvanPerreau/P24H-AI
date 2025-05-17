@@ -203,4 +203,4 @@ class Action:
         
         self._connection.send_message(self.format_command(CommandType.DAMAGE.value))
         
-        return int(self.parse_response(self._connection.receive_message())[1])
+        return int(self.parse_response(self._connection.receive_message())[0])
