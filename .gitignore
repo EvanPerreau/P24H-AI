@@ -1,0 +1,8 @@
+# Ignore les fichiers de log
+*.log
+
+# Ignore les fichiers de configuration
+*.config
+
+# Ignore les fichiers de code source
+*.pyc

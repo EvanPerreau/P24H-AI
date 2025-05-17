@@ -74,16 +74,18 @@ class Monstre:
         if len(data) % nombre_elements_par_monstre != 0:
             Logger.warning(f"Format de données monstres invalide: {len(data)} éléments n'est pas un multiple de {nombre_elements_par_monstre}")
         
+        id = 0
         # Traiter les monstres par blocs de 2 éléments
         for i in range(0, len(data), nombre_elements_par_monstre):
             if i + nombre_elements_par_monstre <= len(data):
                 monstre_data = data[i:i+nombre_elements_par_monstre]
                 monstre = cls.from_array(monstre_data)
-                monstre.set_index(i)
+                monstre.set_index(id)
                 monstres.append(monstre)
+                id += 1
         
         return monstres
     
     def __str__(self) -> str:
         """Retourne une représentation textuelle du monstre."""
-        return f"Monstre(vie={self.vie}, gain_savoir={self.gain_savoir})"
+        return f"Monstre(index={self.index}, vie={self.vie}, gain_savoir={self.gain_savoir})"

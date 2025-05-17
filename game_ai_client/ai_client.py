@@ -81,15 +81,14 @@ class AIClient:
             self.team_number = self.action.send_team_name("BUTiChat")
 
         if self.game_state[0] == "DEBUT_TOUR":
-            players = self.action.get_joueurs()
-            print_table(players)
             me = self.action.get_moi()
-            print_table(me)
+            other_players = [player for player in self.action.get_joueurs() if int(player.index) != int(self.team_number)]
             monstres = self.action.get_monstres()
-            print_table(monstres)
             pioches = self.action.get_pioches()
-            print_table(pioches)
+            degats = self.action.get_degats()
             self.action.piocher(0)
+
+            
     
     def run_game_loop(self):
         """

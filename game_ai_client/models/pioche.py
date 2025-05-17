@@ -88,17 +88,19 @@ class Pioche:
         if len(data) % nombre_elements_par_pioche != 0:
             Logger.warning(f"Format de données pioches invalide: {len(data)} éléments n'est pas un multiple de {nombre_elements_par_pioche}")
         
+        id = 0
         # Traiter les pioches par blocs de 2 éléments
         for i in range(0, len(data), nombre_elements_par_pioche):
             if i + nombre_elements_par_pioche <= len(data):
                 pioche_data = data[i:i+nombre_elements_par_pioche]
                 pioche = cls.from_array(pioche_data)
-                pioche.set_index(i)
+                pioche.set_index(id)
                 pioches.append(pioche)
+                id += 1
         
         return pioches
     
     def __str__(self) -> str:
         """Retourne une représentation textuelle de la pioche."""
         type_str = self.type_carte.value if self.type_carte else "INCONNU"
-        return f"Pioche(type={type_str}, valeur={self.valeur})"
+        return f"Pioche(index={self.index}, type={type_str}, valeur={self.valeur})"

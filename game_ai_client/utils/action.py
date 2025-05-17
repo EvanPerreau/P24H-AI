@@ -28,7 +28,7 @@ class CommandType(Enum):
     MOI = "MOI"
     MONSTRES = "MONSTRES"
     PIOCHES = "PIOCHES"
-    DAMAGE = "DAMAGE"
+    DEGATS = "DEGATS"
 
 
 class Action:
@@ -66,6 +66,8 @@ class Action:
         Returns:
             str: La commande formatée
         """
+        if args is None:
+            args = []
         args = [str(arg) for arg in args if arg is not None]
         return "|".join([command] + args)
     
@@ -94,7 +96,7 @@ class Action:
             team number
         """
         self._connection.send_message(team_name)
-        return self.parse_response(self._connection.receive_message())[1]
+        return int(self.parse_response(self._connection.receive_message())[1])
         
     
     def piocher(self, expedition_number: int, malus_player_number: Optional[int] = None) -> bool:
@@ -167,7 +169,7 @@ class Action:
         
         self._connection.send_message(self.format_command(CommandType.MOI.value))
         
-        return Joueur.from_server_response(self.parse_response(self._connection.receive_message()))
+        return Joueur.from_array(self.parse_response(self._connection.receive_message()))
     
     def get_monstres(self) -> List[Monstre]:
         """
@@ -193,7 +195,7 @@ class Action:
         
         return Pioche.from_server_response(self.parse_response(self._connection.receive_message()))
 
-    def get_damage(self) -> int:
+    def get_degats(self) -> int:
         """
         Génère une demande pour obtenir des informations sur les dommages.
         
@@ -201,6 +203,6 @@ class Action:
             Dict[str, Any]: Demande formatée
         """
         
-        self._connection.send_message(self.format_command(CommandType.DAMAGE.value))
+        self._connection.send_message(self.format_command(CommandType.DEGATS.value))
         
         return int(self.parse_response(self._connection.receive_message())[0])

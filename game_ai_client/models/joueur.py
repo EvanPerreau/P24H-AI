@@ -24,7 +24,7 @@ class Joueur:
         self.score_defense = score_defense
         self.score_attaque = score_attaque
         self.score_savoir = score_savoir
-        self.index = 0
+        self.index = None
 
     def set_index(self, index: int):
         """
@@ -80,16 +80,18 @@ class Joueur:
         if len(data) % nombre_elements_par_joueur != 0:
             Logger.warning(f"Format de données joueurs invalide: {len(data)} éléments n'est pas un multiple de {nombre_elements_par_joueur}")
         
+        id = 0
         # Traiter les joueurs par blocs de 4 éléments
         for i in range(0, len(data), nombre_elements_par_joueur):
             if i + nombre_elements_par_joueur <= len(data):
                 joueur_data = data[i:i+nombre_elements_par_joueur]
                 joueur = cls.from_array(joueur_data)
-                joueur.set_index(i)
+                joueur.set_index(id)
                 joueurs.append(joueur)
+                id += 1
         
         return joueurs
     
     def __str__(self) -> str:
         """Retourne une représentation textuelle du joueur."""
-        return f"Joueur(vie={self.vie}, defense={self.score_defense}, attaque={self.score_attaque}, savoir={self.score_savoir})"
+        return f"Joueur(index={self.index}, vie={self.vie}, defense={self.score_defense}, attaque={self.score_attaque}, savoir={self.score_savoir})"
