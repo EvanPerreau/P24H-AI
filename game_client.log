@@ -1,0 +1,16 @@
+2025-05-17 11:44:31 - INFO - Configuré avec hôte=localhost, port=8080
+2025-05-17 11:44:31 - CRITICAL - Erreur d'application: AIClient.__new__() takes 1 positional argument but 2 were given
+2025-05-17 11:45:08 - INFO - Configuré avec hôte=localhost, port=8080
+2025-05-17 11:45:08 - CRITICAL - Erreur d'application: AIClient.__new__() takes 1 positional argument but 2 were given
+2025-05-17 11:46:00 - INFO - Configuré avec hôte=localhost, port=8080
+2025-05-17 11:46:00 - ERROR - Échec de la connexion au serveur: [Errno 111] Connection refused
+2025-05-17 11:46:00 - CRITICAL - Erreur d'application: Impossible de se connecter au serveur: [Errno 111] Connection refused
+2025-05-17 11:46:17 - INFO - Configuré avec hôte=localhost, port=8080
+2025-05-17 11:46:17 - ERROR - Échec de la connexion au serveur: [Errno 111] Connection refused
+2025-05-17 11:46:17 - CRITICAL - Erreur d'application: Impossible de se connecter au serveur: [Errno 111] Connection refused
+2025-05-17 11:47:12 - INFO - Configuré avec hôte=localhost, port=8080
+2025-05-17 11:47:12 - ERROR - Échec de la connexion au serveur: [Errno 111] Connection refused
+2025-05-17 11:47:12 - CRITICAL - Erreur d'application: Impossible de se connecter au serveur: [Errno 111] Connection refused
+2025-05-17 11:50:27 - INFO - Configuré avec hôte=localhost, port=8080
+2025-05-17 11:50:27 - ERROR - Échec de la connexion au serveur: [Errno 111] Connection refused
+2025-05-17 11:50:27 - CRITICAL - Erreur d'application: Impossible de se connecter au serveur: [Errno 111] Connection refused
