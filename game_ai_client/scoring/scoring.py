@@ -79,7 +79,7 @@ class Scoring:
             if carte.type_carte == TypeCarte.DEFENSE:
                 if carte.valeur < 0:
                     enemy_with_most_knowledge = max(self.enemies, key=lambda enemy: enemy.savoir, default=None)
-                    if enemy_with_most_knowledge is not None:
+                    if enemy_with_most_knowledge is not None and enemy_with_most_knowledge.savoir > self.me.savoir:
                         if enemy_with_most_knowledge.score_defense >= carte.valeur*-1:
                             score_valeur = (carte.valeur * -1) * 2
                             self.scored_cartes.append({
