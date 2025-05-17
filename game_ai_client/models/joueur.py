@@ -24,6 +24,16 @@ class Joueur:
         self.score_defense = score_defense
         self.score_attaque = score_attaque
         self.score_savoir = score_savoir
+        self.index = 0
+
+    def set_index(self, index: int):
+        """
+        Définit l'index du joueur.
+        
+        Args:
+            index: Index du joueur
+        """
+        self.index = index
     
     @classmethod
     def from_array(cls, data: List[str]) -> 'Joueur':
@@ -75,6 +85,7 @@ class Joueur:
             if i + nombre_elements_par_joueur <= len(data):
                 joueur_data = data[i:i+nombre_elements_par_joueur]
                 joueur = cls.from_array(joueur_data)
+                joueur.set_index(i)
                 joueurs.append(joueur)
         
         return joueurs

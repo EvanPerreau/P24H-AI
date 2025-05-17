@@ -20,6 +20,16 @@ class Monstre:
         """
         self.vie = vie
         self.gain_savoir = gain_savoir
+        self.index = 0
+
+    def set_index(self, index: int):
+        """
+        Définit l'index du monstre.
+        
+        Args:
+            index: Index du monstre
+        """
+        self.index = index
     
     @classmethod
     def from_array(cls, data: List[str]) -> 'Monstre':
@@ -69,6 +79,7 @@ class Monstre:
             if i + nombre_elements_par_monstre <= len(data):
                 monstre_data = data[i:i+nombre_elements_par_monstre]
                 monstre = cls.from_array(monstre_data)
+                monstre.set_index(i)
                 monstres.append(monstre)
         
         return monstres
