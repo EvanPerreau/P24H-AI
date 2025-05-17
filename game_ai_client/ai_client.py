@@ -90,7 +90,7 @@ class AIClient:
             monstres = [monstre for monstre in self.action.get_monstres() if int(monstre.vie) > 0]
             pioches = self.action.get_pioches()
             degats = self.action.get_degats()
-            scoring = Scoring(monstres, pioches, me, self.deck, degats, int(self.game_state[2]) + 1)
+            scoring = Scoring(monstres, pioches, me, self.deck, degats, int(self.game_state[2]) + 1, other_players)
 
             if int(self.game_state[1]) == 20 and int(self.game_state[2]) == 15:
                 self.action.utiliser(TypeCarte.SAVOIR)

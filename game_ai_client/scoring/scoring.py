@@ -5,7 +5,7 @@ from ..models import TypeCarte
 from ..models import Deck
 
 class Scoring:
-    def __init__(self, monstres: list[Monstre], cartes: list[Pioche], me: Joueur, deck: Deck, fdr: int, nb_tours: int):
+    def __init__(self, monstres: list[Monstre], cartes: list[Pioche], me: Joueur, deck: Deck, fdr: int, nb_tours: int, enemies: list[Joueur]):
         """
         Initialise le système de scoring pour le jeu.
 
@@ -21,6 +21,7 @@ class Scoring:
         self.nb_tours = nb_tours
         self.scored_monstres = []
         self.scored_cartes = []
+        self.enemies = enemies
         self.set_score_monstres()
         self.set_score_cartes()
 
@@ -76,6 +77,17 @@ class Scoring:
             score_valeur = 0
 
             if carte.type_carte == TypeCarte.DEFENSE:
+                if carte.valeur < 0:
+                    enemy_with_most_knowledge = max(self.enemies, key=lambda enemy: enemy.savoir, default=None)
+                    if enemy_with_most_knowledge is not None:
+                        if enemy_with_most_knowledge.score_defense >= carte.valeur*-1:
+                            score_valeur = (carte.valeur * -1) * 2
+                            self.scored_cartes.append({
+                                "index": carte.index,
+                                "score": score_valeur
+                            })
+                            return
+
                 multiplicateur_fdr = 1
                 if self.fdr > (self.me.score_defense + self.deck.sum_values_by_type(TypeCarte.DEFENSE)):
                     defense = self.fdr - (self.me.score_defense + self.deck.sum_values_by_type(TypeCarte.DEFENSE))
