@@ -7,6 +7,9 @@ from typing import Dict, Any, List
 from .connection import Connection
 from .utils.logger import Logger
 from .utils.action import Action
+from .models.deck import Deck
+from .scoring.scoring import Scoring
+from .models import TypeCarte
 
 
 class AIClient:
@@ -34,6 +37,7 @@ class AIClient:
         self.action = Action(self.connection)
         self.game_state: List[str] = []
         self.team_number: int = None
+        self.deck = Deck()
         Logger.info("Client IA initialisé")
   
     def __init__(self):
@@ -86,7 +90,42 @@ class AIClient:
             monstres = self.action.get_monstres()
             pioches = self.action.get_pioches()
             degats = self.action.get_degats()
-            self.action.piocher(0)
+            scoring = Scoring(monstres, pioches, me, self.deck, degats)
+            if int(self.game_state[2]) % 4 != 0:
+                card = scoring.get_scored_cartes()[0]
+                for scored_carte in scoring.get_scored_cartes():
+                    if scored_carte["score"] > card["score"]:
+                        card = scored_carte
+                
+                self.action.piocher(card["index"])
+                for p in pioches:
+                    if p.index == card["index"]:
+                        self.deck.add_card(p)
+            
+            elif self.deck.sum_values_by_type(TypeCarte.ATTAQUE) <= 0 and me.score_attaque <= 0:
+                card = scoring.get_scored_cartes()[0]
+                for scored_carte in scoring.get_scored_cartes():
+                    if scored_carte["score"] > card["score"]:
+                        card = scored_carte
+                
+                self.action.piocher(card["index"])
+                for p in pioches:
+                    if p.index == card["index"]:
+                        self.deck.add_card(p)
+                        break
+
+            else:
+                self.action.utiliser(TypeCarte.ATTAQUE)
+                monster = scoring.get_scored_monstres()[0]
+                for scored_monster in scoring.get_scored_monstres():
+                    if scored_monster["score"] > monster["score"]:
+                        monster = scored_monster
+                
+                self.action.attaquer(monster["index"])
+
+            if int(self.game_state[2]) == 12:
+                self.action.utiliser(TypeCarte.DEFENSE)
+                self.action.utiliser(TypeCarte.SAVOIR)
 
             
     
