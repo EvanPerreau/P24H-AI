@@ -30,6 +30,16 @@ class Pioche:
         """
         self.type_carte = type_carte
         self.valeur = valeur
+        self.index = 0
+
+    def set_index(self, index: int):
+        """
+        Définit l'index de la pioche.
+        
+        Args:
+            index: Index de la pioche
+        """
+        self.index = index
     
     @classmethod
     def from_array(cls, data: List[str]) -> 'Pioche':
@@ -83,6 +93,7 @@ class Pioche:
             if i + nombre_elements_par_pioche <= len(data):
                 pioche_data = data[i:i+nombre_elements_par_pioche]
                 pioche = cls.from_array(pioche_data)
+                pioche.set_index(i)
                 pioches.append(pioche)
         
         return pioches
