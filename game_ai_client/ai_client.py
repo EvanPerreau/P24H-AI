@@ -123,7 +123,7 @@ class AIClient:
                 
                 self.action.attaquer(monster["index"])
 
-            if int(self.game_state[2]) + 1 == 12:
+            if int(self.game_state[2]) + 1 == 16:
                 self.action.utiliser(TypeCarte.DEFENSE)
                 self.action.utiliser(TypeCarte.SAVOIR)
 
