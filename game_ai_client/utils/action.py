@@ -28,6 +28,7 @@ class CommandType(Enum):
     MOI = "MOI"
     MONSTRES = "MONSTRES"
     PIOCHES = "PIOCHES"
+    DAMAGE = "DAMAGE"
 
 
 class Action:
@@ -191,3 +192,15 @@ class Action:
         self._connection.send_message(self.format_command(CommandType.PIOCHES.value))
         
         return Pioche.from_server_response(self.parse_response(self._connection.receive_message()))
+
+    def get_damage(self) -> int:
+        """
+        Génère une demande pour obtenir des informations sur les dommages.
+        
+        Returns:
+            Dict[str, Any]: Demande formatée
+        """
+        
+        self._connection.send_message(self.format_command(CommandType.DAMAGE.value))
+        
+        return int(self.parse_response(self._connection.receive_message())[1])
